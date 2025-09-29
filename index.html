@@ -748,6 +748,72 @@
                     </div>
                     <div class="quiz-feedback" id="feedback4"></div>
                 </div>
+
+                <div class="quiz-question">
+                    <h3>Question 5: What is a vulnerability?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer5(this, false)">A tool used to attack systems</div>
+                        <div class="quiz-option" onclick="checkAnswer5(this, true)">A flaw or weakness in design or implementation</div>
+                        <div class="quiz-option" onclick="checkAnswer5(this, false)">A type of hacker</div>
+                        <div class="quiz-option" onclick="checkAnswer5(this, false)">A security protocol</div>
+                    </div>
+                    <div class="quiz-feedback" id="feedback5"></div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 6: What caused the NAC implementation to jump from 45% to 95% adoption?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer6(this, false)">Stricter enforcement</div>
+                        <div class="quiz-option" onclick="checkAnswer6(this, false)">More training</div>
+                        <div class="quiz-option" onclick="checkAnswer6(this, true)">Adding a 3-day grace period</div>
+                        <div class="quiz-option" onclick="checkAnswer6(this, false)">Removing all requirements</div>
+                    </div>
+                    <div class="quiz-feedback" id="feedback6"></div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 7: Which of the following can be gathered during footprinting?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer7(this, false)">Only IP addresses</div>
+                        <div class="quiz-option" onclick="checkAnswer7(this, false)">Only domain names</div>
+                        <div class="quiz-option" onclick="checkAnswer7(this, true)">Domain names, IP addresses, and network topology</div>
+                        <div class="quiz-option" onclick="checkAnswer7(this, false)">Only phone numbers</div>
+                    </div>
+                    <div class="quiz-feedback" id="feedback7"></div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 8: What is the primary difference between a threat and a threat agent?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer8(this, false)">They are the same thing</div>
+                        <div class="quiz-option" onclick="checkAnswer8(this, true)">A threat is the potential violation; a threat agent is who/what causes it</div>
+                        <div class="quiz-option" onclick="checkAnswer8(this, false)">A threat agent is more dangerous</div>
+                        <div class="quiz-option" onclick="checkAnswer8(this, false)">A threat is physical; a threat agent is digital</div>
+                    </div>
+                    <div class="quiz-feedback" id="feedback8"></div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 9: What is an exploit?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer9(this, false)">A type of vulnerability</div>
+                        <div class="quiz-option" onclick="checkAnswer9(this, false)">A security best practice</div>
+                        <div class="quiz-option" onclick="checkAnswer9(this, true)">Software or tools used to take advantage of vulnerabilities</div>
+                        <div class="quiz-option" onclick="checkAnswer9(this, false)">A type of firewall</div>
+                    </div>
+                    <div class="quiz-feedback" id="feedback9"></div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 10: In the CIA Triad, what does Availability ensure?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer10(this, false)">Data is encrypted</div>
+                        <div class="quiz-option" onclick="checkAnswer10(this, false)">Only certain users can see data</div>
+                        <div class="quiz-option" onclick="checkAnswer10(this, true)">Authorized users have reliable access when needed</div>
+                        <div class="quiz-option" onclick="checkAnswer10(this, false)">Data hasn't been modified</div>
+                    </div>
+                    <div class="quiz-feedback" id="feedback10"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -837,6 +903,72 @@
                 feedback.className = 'quiz-feedback correct';
             } else {
                 feedback.textContent = '❌ Not quite. Which color represents the "good guys" in security?';
+                feedback.className = 'quiz-feedback incorrect';
+            }
+        }
+
+        function checkAnswer5(option, isCorrect) {
+            const feedback = document.getElementById('feedback5');
+            if (isCorrect) {
+                feedback.textContent = '✅ Correct! A vulnerability is a flaw that could be exploited by threats.';
+                feedback.className = 'quiz-feedback correct';
+            } else {
+                feedback.textContent = '❌ Try again. A vulnerability is a weakness that can be exploited.';
+                feedback.className = 'quiz-feedback incorrect';
+            }
+        }
+
+        function checkAnswer6(option, isCorrect) {
+            const feedback = document.getElementById('feedback6');
+            if (isCorrect) {
+                feedback.textContent = '✅ Correct! The 3-day grace period made the system more user-friendly.';
+                feedback.className = 'quiz-feedback correct';
+            } else {
+                feedback.textContent = '❌ Not quite. What change made the system less restrictive?';
+                feedback.className = 'quiz-feedback incorrect';
+            }
+        }
+
+        function checkAnswer7(option, isCorrect) {
+            const feedback = document.getElementById('feedback7');
+            if (isCorrect) {
+                feedback.textContent = '✅ Correct! Footprinting gathers comprehensive information about the target.';
+                feedback.className = 'quiz-feedback correct';
+            } else {
+                feedback.textContent = '❌ Try again. Footprinting collects many types of information.';
+                feedback.className = 'quiz-feedback incorrect';
+            }
+        }
+
+        function checkAnswer8(option, isCorrect) {
+            const feedback = document.getElementById('feedback8');
+            if (isCorrect) {
+                feedback.textContent = '✅ Correct! A threat is the potential harm; a threat agent is the actor.';
+                feedback.className = 'quiz-feedback correct';
+            } else {
+                feedback.textContent = '❌ Not quite. Think about the difference between the danger and who causes it.';
+                feedback.className = 'quiz-feedback incorrect';
+            }
+        }
+
+        function checkAnswer9(option, isCorrect) {
+            const feedback = document.getElementById('feedback9');
+            if (isCorrect) {
+                feedback.textContent = '✅ Correct! Exploits are tools like Metasploit or Ophcrack that leverage vulnerabilities.';
+                feedback.className = 'quiz-feedback correct';
+            } else {
+                feedback.textContent = '❌ Try again. An exploit is what attackers use to take advantage of weaknesses.';
+                feedback.className = 'quiz-feedback incorrect';
+            }
+        }
+
+        function checkAnswer10(option, isCorrect) {
+            const feedback = document.getElementById('feedback10');
+            if (isCorrect) {
+                feedback.textContent = '✅ Correct! Availability ensures systems and data are accessible when needed.';
+                feedback.className = 'quiz-feedback correct';
+            } else {
+                feedback.textContent = '❌ Not quite. Availability is about ensuring access when authorized users need it.';
                 feedback.className = 'quiz-feedback incorrect';
             }
         }
