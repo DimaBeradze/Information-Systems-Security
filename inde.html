@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Security Learning Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            animation: slideDown 1s ease-out;
+        }
+
+        .nav-tab {
+            background: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .content-area {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .topic-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .topic-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .topic-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topic-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            color: #34495e;
+        }
+
+        .topic-card.expanded .topic-content {
+            max-height: 500px;
+            margin-top: 15px;
+        }
+
+        .chevron {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .topic-card.expanded .chevron {
+            transform: rotate(90deg);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .cia-triangle {
+            width: 300px;
+            height: 260px;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            position: absolute;
+        }
+
+        .confidentiality {
+            border-bottom: 260px solid #27ae60;
+            transform: rotate(0deg);
+        }
+
+        .integrity {
+            border-bottom: 260px solid #e74c3c;
+            transform: rotate(120deg);
+            opacity: 0.7;
+        }
+
+        .availability {
+            border-bottom: 260px solid #f39c12;
+            transform: rotate(240deg);
+            opacity: 0.7;
+        }
+
+        .cia-labels {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .cia-label {
+            position: absolute;
+            font-weight: bold;
+            color: white;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            background: #ecf0f1;
+            border-radius: 20px;
+            height: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 20px;
+            transition: width 0.5s ease;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-card h4 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .quiz-question {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .quiz-options {
+            margin: 15px 0;
+        }
+
+        .quiz-option {
+            background: white;
+            padding: 10px 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .quiz-feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .quiz-feedback.correct {
+            background: #27ae60;
+            color: white;
+            display: block;
+        }
+
+        .quiz-feedback.incorrect {
+            background: #e74c3c;
+            color: white;
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔒 Computer Security Learning Hub</h1>
+            <p>Master the fundamentals of cybersecurity through interactive learning</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('intro')">Introduction</button>
+            <button class="nav-tab" onclick="showSection('vulnerability')">Vulnerability Research</button>
+            <button class="nav-tab" onclick="showSection('footprinting')">Footprinting</button>
+            <button class="nav-tab" onclick="showSection('definitions')">Key Definitions</button>
+            <button class="nav-tab" onclick="showSection('cia')">CIA Triad</button>
+            <button class="nav-tab" onclick="showSection('hackers')">Hacker Types</button>
+            <button class="nav-tab" onclick="showSection('practical')">Practical Security</button>
+            <button class="nav-tab" onclick="showSection('quiz')">Test Yourself</button>
+        </div>
+
+        <div class="content-area">
+            <!-- Introduction Section -->
+            <div class="section active" id="intro">
+                <h2>Welcome to Your Security Journey! 🚀</h2>
+                <p style="margin: 20px 0; line-height: 1.8;">
+                    This interactive learning hub will guide you through essential computer security concepts. 
+                    Click on any topic card below to expand and explore. Navigate through the tabs above to 
+                    dive deeper into specific areas.
+                </p>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%" id="progress"></div>
+                </div>
+                <p style="text-align: center; color: #7f8c8d;">Your Learning Progress: <span id="progress-text">0%</span></p>
+
+                <div class="highlight-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand practical computer security fundamentals</li>
+                        <li>Master vulnerability research and footprinting techniques</li>
+                        <li>Learn key security terminology and concepts</li>
+                        <li>Explore the CIA triad and its importance</li>
+                        <li>Differentiate between types of hackers and their motivations</li>
+                        <li>Apply security controls and mitigation strategies</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Vulnerability Research Section -->
+            <div class="section" id="vulnerability">
+                <h2>🔍 Vulnerability Research</h2>
+                
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Knowledge is Power</h3>
+                    <div class="topic-content">
+                        <p>In security, knowledge truly is power. The more you know about your systems and potential threats, the better you can defend them.</p>
+                        <ul>
+                            <li><strong>How often are you checking?</strong> - Regular security assessments are crucial</li>
+                            <li><strong>Where do you check?</strong> - Know where vulnerabilities typically hide</li>
+                            <li><strong>Think like a hacker</strong> - Understand attacker mindsets and techniques</li>
+                            <li><strong>Collect threat intelligence</strong> - Stay informed about trends, attacks, and threats</li>
+                            <li><strong>Plan recovery strategies</strong> - Know how to respond when things go wrong</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Where to Look for Security Information</h3>
+                    <div class="topic-content">
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <h4>Vendor Sources</h4>
+                                <ul>
+                                    <li>Operating system vendors (Microsoft, Linux, Apple)</li>
+                                    <li>Application vendors</li>
+                                    <li>Hardware manufacturers</li>
+                                    <li>Component vendors</li>
+                                </ul>
+                            </div>
+                            <div class="info-card">
+                                <h4>Security Resources</h4>
+                                <ul>
+                                    <li>HackerStorm</li>
+                                    <li>Security Magazine</li>
+                                    <li>SecurityFocus</li>
+                                    <li>Security blogs and forums</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footprinting Section -->
+            <div class="section" id="footprinting">
+                <h2>👣 Footprinting</h2>
+                
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> What is Footprinting?</h3>
+                    <div class="topic-content">
+                        <p><strong>Footprinting</strong> is the process of collecting data that reveals system vulnerabilities which can be exploited.</p>
+                        <div class="highlight-box">
+                            <p>💡 <strong>Key Fact:</strong> Most hackers spend 90% of their time in footprinting and only 10% performing the actual attack!</p>
+                        </div>
+                        <ul>
+                            <li>Essential skill for ethical hackers</li>
+                            <li>Looking for ANY information about the target, no matter how small</li>
+                            <li>Reveals attack vectors and weak points</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Types of Footprinting</h3>
+                    <div class="topic-content">
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <h4>🎯 Active Footprinting</h4>
+                                <p>Directly extracting information from the target's website or systems. This involves direct interaction with the target.</p>
+                            </div>
+                            <div class="info-card">
+                                <h4>🕵️ Passive Footprinting</h4>
+                                <p>No direct contact with the target. Information is gathered from third-party sources like Google, Yahoo, and public records.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Information That Can Be Gathered</h3>
+                    <div class="topic-content">
+                        <ul>
+                            <li>📍 Domain names and IP addresses</li>
+                            <li>📞 Phone numbers and contact addresses</li>
+                            <li>🔐 Access control mechanisms</li>
+                            <li>💻 Operating system information</li>
+                            <li>🌐 Network blocks and topology</li>
+                            <li>⚙️ Network applications and services</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Definitions Section -->
+            <div class="section" id="definitions">
+                <h2>📚 Key Security Definitions</h2>
+                
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Asset</h3>
+                    <div class="topic-content">
+                        <p>An <strong>asset</strong> is anything that needs to be protected.</p>
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <h4>Information Assets</h4>
+                                <p>Medical records, social security numbers, banking data, intellectual property</p>
+                            </div>
+                            <div class="info-card">
+                                <h4>System Assets</h4>
+                                <p>Defense systems, critical infrastructure, servers, workstations</p>
+                            </div>
+                            <div class="info-card">
+                                <h4>Service Assets</h4>
+                                <p>Websites, life/safety systems, communication platforms</p>
+                            </div>
+                            <div class="info-card">
+                                <h4>Physical Assets</h4>
+                                <p>Facilities that house any of the above assets</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Threat & Threat Agent</h3>
+                    <div class="topic-content">
+                        <p>A <strong>threat</strong> is any potential violation of security that could cause harm to an asset.</p>
+                        <ul>
+                            <li>Someone wanting to do harm</li>
+                            <li>An insecure service</li>
+                            <li>Unacknowledged systems or services</li>
+                        </ul>
+                        <p style="margin-top: 15px;">A <strong>threat agent</strong> is anyone or anything that wants to do harm or harms an asset:</p>
+                        <ul>
+                            <li>Hackers and hacktivists</li>
+                            <li>Malicious insiders</li>
+                            <li>Non-malicious entities (e.g., accidental damage)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Vulnerability</h3>
+                    <div class="topic-content">
+                        <p>A <strong>vulnerability</strong> is a flaw or weakness in the design or implementation of an asset that could be exploited.</p>
+                        <ul>
+                            <li>❌ Incorrect system configurations</li>
+                            <li>🔓 Open ports on networked computers</li>
+                            <li>💾 Poor backup strategies</li>
+                            <li>🐛 Poor coding practices</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Exploit</h3>
+                    <div class="topic-content">
+                        <p>An <strong>exploit</strong> is any software or tool intentionally used to take advantage of a vulnerability.</p>
+                        <ul>
+                            <li>🔧 Hacking tools (Metasploit, Ophcrack)</li>
+                            <li>🔨 Physical tools (crowbar on a weak door)</li>
+                            <li>📜 Scripts and malware</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Risk</h3>
+                    <div class="topic-content">
+                        <p>A <strong>risk</strong> is the probability that a threat will take advantage of a vulnerability and cause harm.</p>
+                        <div class="highlight-box">
+                            <h4>Risk Examples:</h4>
+                            <ul>
+                                <li><strong>Backup Risk:</strong> Having only 1 backup increases risk of data loss</li>
+                                <li><strong>Value-based Risk:</strong> Banking systems have higher risk than personal photo collections due to their value to attackers</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Attack</h3>
+                    <div class="topic-content">
+                        <p>An <strong>attack</strong> is any intentional or unintentional event that harms or intends to harm an asset.</p>
+                        <ul>
+                            <li>🚫 Denial of Service (DoS) attacks</li>
+                            <li>📊 Data breaches</li>
+                            <li>💥 Physical destruction of equipment</li>
+                            <li>🔐 Unauthorized access attempts</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Mitigation & Compensating Controls</h3>
+                    <div class="topic-content">
+                        <p><strong>Mitigation:</strong> Any tool, service, or system that lessens the risk of attack.</p>
+                        <p><strong>Compensating Control:</strong> Any tool, service, or system that lowers risk by intentionally getting in the way of the threat.</p>
+                        <div class="highlight-box">
+                            <p>Example: A firewall between a vulnerable system and the internet acts as a compensating control.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CIA Triad Section -->
+            <div class="section" id="cia">
+                <h2>🔺 The CIA Triad</h2>
+                
+                <div class="cia-triangle">
+                    <div class="triangle confidentiality"></div>
+                    <div class="triangle integrity"></div>
+                    <div class="triangle availability"></div>
+                    <div class="cia-labels">
+                        <div class="cia-label" style="top: 50px; left: 110px;">Confidentiality</div>
+                        <div class="cia-label" style="bottom: 50px; left: 20px;">Availability</div>
+                        <div class="cia-label" style="bottom: 50px; right: 40px;">Integrity</div>
+                    </div>
+                </div>
+
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Understanding the CIA Triad</h3>
+                    <div class="topic-content">
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <h4>🔐 Confidentiality</h4>
+                                <p>Ensuring information is accessible only to authorized individuals. Protects against unauthorized disclosure.</p>
+                            </div>
+                            <div class="info-card">
+                                <h4>✅ Integrity</h4>
+                                <p>Maintaining the accuracy and completeness of data. Ensures information hasn't been tampered with.</p>
+                            </div>
+                            <div class="info-card">
+                                <h4>🚀 Availability</h4>
+                                <p>Ensuring authorized users have reliable access to information and resources when needed.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hacker Types Section -->
+            <div class="section" id="hackers">
+                <h2>🎩 Types of Hackers</h2>
+                
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Black Hat Hackers</h3>
+                    <div class="topic-content">
+                        <p>Black hat hackers have extensive knowledge about breaking into computer networks and bypassing security protocols.</p>
+                        <ul>
+                            <li>Write malware to gain system access</li>
+                            <li>Motivated by financial gain or malicious intent</li>
+                            <li>Operate illegally</li>
+                            <li>Exploit vulnerabilities for personal benefit</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> White Hat Hackers</h3>
+                    <div class="topic-content">
+                        <p>White hat hackers use their powers for good rather than evil. Also known as "ethical hackers."</p>
+                        <ul>
+                            <li>Often paid employees or contractors</li>
+                            <li>Work as security specialists</li>
+                            <li>Find security holes through authorized testing</li>
+                            <li>Help organizations improve their security</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Grey Hat Hackers</h3>
+                    <div class="topic-content">
+                        <p>Grey hat hackers are a blend of both black hat and white hat activities.</p>
+                        <ul>
+                            <li>Look for vulnerabilities without permission</li>
+                            <li>Report findings to owners</li>
+                            <li>Sometimes request fees to fix issues</li>
+                            <li>Operate in ethical grey areas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Practical Security Section -->
+            <div class="section" id="practical">
+                <h2>⚙️ Practical Computer Security</h2>
+                
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> What is Practical Security?</h3>
+                    <div class="topic-content">
+                        <p>Practical computer security means applying security in everyday settings effectively.</p>
+                        <div class="highlight-box">
+                            <h4>⚠️ Common Pitfalls:</h4>
+                            <ul>
+                                <li>Over-implementing controls can force users to find workarounds</li>
+                                <li>Too much management overhead</li>
+                                <li>Security that prevents legitimate work</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Case Study: NAC Implementation</h3>
+                    <div class="topic-content">
+                        <h4>Initial Implementation (2007)</h4>
+                        <ul>
+                            <li>Very strict "black and white" rules</li>
+                            <li>Required antivirus/antispyware to be fully updated</li>
+                            <li>Windows must be completely patched</li>
+                            <li>Users kicked off network for non-compliance</li>
+                        </ul>
+                        
+                        <h4>The Problem:</h4>
+                        <ul>
+                            <li>Users placed in quarantine VLAN</li>
+                            <li>15+ minutes to get back on network</li>
+                            <li>45% adoption rate</li>
+                            <li>Users found workarounds using VPN</li>
+                        </ul>
+                        
+                        <h4>The Solution:</h4>
+                        <p>Switched vendors and added a 3-day grace period → 95% adoption!</p>
+                    </div>
+                </div>
+
+                <div class="topic-card" onclick="toggleCard(this)">
+                    <h3><span class="chevron">▶</span> Why We Need Security</h3>
+                    <div class="topic-content">
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <h4>📝 Information Protection</h4>
+                                <ul>
+                                    <li>Intellectual Property</li>
+                                    <li>Personal Information</li>
+                                    <li>Financial Data</li>
+                                </ul>
+                            </div>
+                            <div class="info-card">
+                                <h4>🛡️ Safety Concerns</h4>
+                                <ul>
+                                    <li>Safety of people</li>
+                                    <li>Safety of systems</li>
+                                    <li>Critical infrastructure</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="section" id="quiz">
+                <h2>🎯 Test Your Knowledge</h2>
+                
+                <div class="quiz-question">
+                    <h3>Question 1: What percentage of time do most hackers spend on footprinting?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">10%</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">50%</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, true)">90%</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">25%</div>
+                    </div>
+                    <div class="quiz-feedback" id="feedback1"></div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 2: Which type of footprinting involves no direct contact with the target?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer2(this, false)">Active Footprinting</div>
+                        <div class="quiz-option" onclick="checkAnswer2(this, true)">Passive Footprinting</div>
+                        <div class="quiz-option" onclick="checkAnswer2(this, false)">Direct Footprinting</div>
+                        <div class="quiz-option" onclick="checkAnswer2(this, false)">System Footprinting</div>
+                    </div>
+                    <div class="quiz-feedback" id="feedback2"></div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 3: What does the "I" in CIA Triad stand for?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer3(this, false)">Information</div>
+                        <div class="quiz-option" onclick="checkAnswer3(this, true)">Integrity</div>
+                        <div class="quiz-option" onclick="checkAnswer3(this, false)">Intelligence</div>
+                        <div class="quiz-option" onclick="checkAnswer3(this, false)">Infrastructure</div>
+                    </div>
+                    <div class="quiz-feedback" id="feedback3"></div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 4: Which type of hacker is also known as an "ethical hacker"?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer4(this, false)">Black Hat</div>
+                        <div class="quiz-option" onclick="checkAnswer4(this, true)">White Hat</div>
+                        <div class="quiz-option" onclick="checkAnswer4(this, false)">Grey Hat</div>
+                        <div class="quiz-option" onclick="checkAnswer4(this, false)">Red Hat</div>
+                    </div>
+                    <div class="quiz-feedback" id="feedback4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let visitedSections = new Set();
+        let progress = 0;
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update active tab
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Track progress
+            visitedSections.add(sectionId);
+            updateProgress();
+        }
+
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const totalSections = 8;
+            const visitedCount = visitedSections.size;
+            const expandedCards = document.querySelectorAll('.topic-card.expanded').length;
+            const totalCards = document.querySelectorAll('.topic-card').length;
+            
+            // Calculate progress based on sections visited and cards expanded
+            progress = Math.min(100, Math.round(
+                (visitedCount / totalSections * 50) + 
+                (expandedCards / totalCards * 50)
+            ));
+            
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = progress + '%';
+        }
+
+        function checkAnswer(option, isCorrect) {
+            const feedback = document.getElementById('feedback1');
+            if (isCorrect) {
+                feedback.textContent = '✅ Correct! Most hackers spend 90% of their time on footprinting.';
+                feedback.className = 'quiz-feedback correct';
+            } else {
+                feedback.textContent = '❌ Try again! Remember, footprinting is the most time-consuming phase.';
+                feedback.className = 'quiz-feedback incorrect';
+            }
+        }
+
+        function checkAnswer2(option, isCorrect) {
+            const feedback = document.getElementById('feedback2');
+            if (isCorrect) {
+                feedback.textContent = '✅ Correct! Passive footprinting uses third-party sources without direct contact.';
+                feedback.className = 'quiz-feedback correct';
+            } else {
+                feedback.textContent = '❌ Not quite. Think about which method avoids direct interaction with the target.';
+                feedback.className = 'quiz-feedback incorrect';
+            }
+        }
+
+        function checkAnswer3(option, isCorrect) {
+            const feedback = document.getElementById('feedback3');
+            if (isCorrect) {
+                feedback.textContent = '✅ Correct! Integrity ensures data accuracy and completeness.';
+                feedback.className = 'quiz-feedback correct';
+            } else {
+                feedback.textContent = '❌ Try again! The CIA Triad consists of Confidentiality, Integrity, and Availability.';
+                feedback.className = 'quiz-feedback incorrect';
+            }
+        }
+
+        function checkAnswer4(option, isCorrect) {
+            const feedback = document.getElementById('feedback4');
+            if (isCorrect) {
+                feedback.textContent = '✅ Correct! White hat hackers are ethical security professionals.';
+                feedback.className = 'quiz-feedback correct';
+            } else {
+                feedback.textContent = '❌ Not quite. Which color represents the "good guys" in security?';
+                feedback.className = 'quiz-feedback incorrect';
+            }
+        }
+
+        // Initialize
+        visitedSections.add('intro');
+        updateProgress();
+    </script>
+</body>
+</html>
